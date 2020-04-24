@@ -57,11 +57,15 @@ object Mnist extends App {
   val numEpochs = 2
   // network.fit(emnistTrain, numEpochs)
 
+  val start = System.currentTimeMillis()
+
   //or simply use for loop
   for (i <- 1 to numEpochs) {
     println("Epoch " + i + " / " + numEpochs)
     network.fit(emnistTrain)
   }
+
+  println("training took " + (System.currentTimeMillis() - start))
 
   // evaluate basic performance
   val eval = network.evaluate[Evaluation](emnistTest)
