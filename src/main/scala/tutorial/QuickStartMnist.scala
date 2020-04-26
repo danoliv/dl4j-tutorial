@@ -1,5 +1,7 @@
 package tutorial
 
+import java.io.File
+
 import org.deeplearning4j.nn.conf._
 import org.deeplearning4j.nn.conf.layers._
 import org.deeplearning4j.nn.multilayer._
@@ -9,12 +11,13 @@ import org.nd4j.evaluation.classification._
 import org.nd4j.linalg.activations.Activation
 import org.nd4j.linalg.learning.config._
 import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction // mean squared error, multiclass cross entropy, etc.
+import scala.jdk.CollectionConverters._
 
-object Mnist extends App {
+object QuickStartMnist extends App {
 
   import org.deeplearning4j.datasets.iterator.impl.EmnistDataSetIterator
 
-  val batchSize = 128 // how many examples to simultaneously train in the network
+  val batchSize = 512 // how many examples to simultaneously train in the network
   val emnistSet = EmnistDataSetIterator.Set.BALANCED
   val emnistTrain = new EmnistDataSetIterator(emnistSet, batchSize, true)
   val emnistTest = new EmnistDataSetIterator(emnistSet, batchSize, false)
@@ -54,7 +57,7 @@ object Mnist extends App {
   network.addListeners(new ScoreIterationListener(eachIterations))
 
   // fit for multiple epochs
-  val numEpochs = 2
+  val numEpochs = 10
   // network.fit(emnistTrain, numEpochs)
 
   val start = System.currentTimeMillis()
@@ -66,6 +69,8 @@ object Mnist extends App {
   }
 
   println("training took " + (System.currentTimeMillis() - start))
+
+  //network.save(new File("trained/quick_start_mnist_trained"))
 
   // evaluate basic performance
   val eval = network.evaluate[Evaluation](emnistTest)
